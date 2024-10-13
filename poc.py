@@ -78,6 +78,8 @@ if __name__ == "__main__":
     setup_logging(args.debug)
     logger = logging.getLogger("main")
 
+    passwords = []
+
     with open(args.dump, "rb") as dump_file:
         logger.info(f"Opened {dump_file.name}")
 
@@ -94,4 +96,9 @@ if __name__ == "__main__":
 
         for password in itertools.product(*groups):
             password = "".join(password)
+            passwords.append(password)
             print(f"Possible password: {password}")
+
+    if args.output:
+        with open(args.output, "w", encoding="utf-8") as passwords_file:
+            passwords_file.writelines(f"{pwd}\n" for pwd in passwords)
